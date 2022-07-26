@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Movement : MonoBehaviour
 {
@@ -18,4 +19,31 @@ public class Movement : MonoBehaviour
         // And then smoothing it out and applying it to the character
         rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
     }
+
+    public void Jump(Rigidbody2D rb, float jv)
+    {
+        //Detect if player is colliding with ground
+        //If player is colliding with ground perform jump logic
+        //When player is in air detect if colliding with ground
+        //Else don't do anything
+        rb.AddForce(new Vector2(0f, jv));
+    }
+
+    public bool isGrounded(Transform groundCheck, float checkRadius)
+    {
+        bool grounded = false;
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, checkRadius, LayerMask.GetMask("Ground"));
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i].gameObject != gameObject)
+            {
+                grounded = true;
+            }
+        }
+
+        return grounded;
+    }
+
 }
