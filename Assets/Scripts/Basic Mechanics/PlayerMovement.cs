@@ -2,60 +2,41 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    Rigidbody2D rb;
-    Transform tf;
-
-    private float dir = 0;
-
-    [SerializeField]
-    private float speed = 10f; //speed mult
-
-    [SerializeField]
-    private float jv = 5f; //jump mult
-
-    [SerializeField]
-    GameObject grndCheck;
-
-    private bool jump = false;
-
-    [SerializeField]
-    private float rd = 0.3f;
-
     private Movement move;
 
+    private bool pressedJump = false;
+    private float dir = 0;
 
-   // Start is called before the first frame update
+    // Start is called before the first frame update
     void Start()
     {
         move = GetComponent<Movement>();
-        rb = this.GetComponent<Rigidbody2D>();
-        tf = this.grndCheck.transform;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Gets a value between -1 and 1 for which direct the control stick is held in
         dir = Input.GetAxisRaw("Horizontal");
-
+        //Checks if the Jump button has been pressed and triggers a flag if it is
         if (Input.GetButtonDown("Jump"))
-            jump = true;
+            pressedJump = true;
     }
 
     void FixedUpdate()
     {
-        //Call movement script and move horizontal
-        move.MoveHorizontal(this.GetComponent<Rigidbody2D>(), dir, speed);
+        //Call movement script and move horizontally based on inputed direction
+        move.MoveHorizontal(dir);
 
-        //If the player is grounded 
-        if (move.isGrounded(tf, rd) && jump)
+        //If the player is grounded and the jump button is pressed than trigger the jump logic
+        if (move.isGrounded() && pressedJump)
         {
-            Debug.Log("JUMPED");
-            jump = false;
-            move.Jump(this.GetComponent<Rigidbody2D>(), jv);
+            move.Jump();
         }
-        
 
-
+        //Set that jump has been pressed to false
+        //This is placed at the end to avoid a false flag from being raised until the Jump command is called again
+        pressedJump = false;
     }
 
 }
