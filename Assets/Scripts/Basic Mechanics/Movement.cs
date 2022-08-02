@@ -6,11 +6,11 @@ using UnityEngine.Events;
 public class Movement : MonoBehaviour
 {
     private Rigidbody2D rb;
-    [SerializeField] private Transform tf;
 
     //An adjustable value that smooths the player movement
     [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f;
     [Range(0, .5f)][SerializeField] private float m_GroundCheckRadius = .03f;
+    [SerializeField] private Vector3 m_GroundCheckOffset = new Vector3();
 
 
     [SerializeField] private float speed;
@@ -61,7 +61,9 @@ public class Movement : MonoBehaviour
 
         //Gets and stores all object colliders on Layer "Ground" that are currently colliding with 
         //the circle overlapping between tf's position and the check radius
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(tf.position, m_GroundCheckRadius, LayerMask.GetMask("Ground"));
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(rb.transform.position + m_GroundCheckOffset, m_GroundCheckRadius, LayerMask.GetMask("Ground"));
+
+        Debug.Log("Current colliding with this many objects: " + colliders.Length);
 
         //Loop through all Collider2D objects in the colliders array variable
         for (int i = 0; i < colliders.Length; i++)

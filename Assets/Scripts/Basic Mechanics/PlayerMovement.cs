@@ -29,8 +29,9 @@ public class PlayerMovement : MonoBehaviour
         move.MoveHorizontal(dir);
 
         //If the player is grounded and the jump button is pressed than trigger the jump logic
-        if (move.isGrounded() && pressedJump)
+        if (pressedJump && move.isGrounded())
         {
+            Debug.Log("WE'RE JUMPING");
             move.Jump();
         }
 
