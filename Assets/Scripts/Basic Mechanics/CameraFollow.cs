@@ -4,45 +4,53 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+    //The Game Object the camera will follow
     [SerializeField]
     private GameObject _go;
 
+    //Used to make the camera go higher or lower than the player (Look and feel shit)
+    [SerializeField]
+    private float _yOffset;
+
+    //Transform component for the Camera Object
     private Transform tf;
+    //Transform component for the Game Object the camera will follow
     private Transform gotf;
 
-    [SerializeField]
-    private float _cameraSmoothSpeed;
+    //Stores old GameObject Transform position to reference later
+    private Vector3 pgotf;
 
-    [SerializeField]
-    private float _cameraBoundary;
-
-    private float[] boundaries = new float[4];
-
-    // Start is called before the first frame update
     void Start()
     {
+        //Set the transform objects based on the provided components
         tf = GetComponent<Transform>();
         gotf = _go.GetComponent<Transform>();
-        
-        tf.position = new Vector3(gotf.position.x, gotf.position.y, gotf.position.z - 1);
 
-        UpdateCameraBoundaries();
+        //Store initial position for later checks
+        pgotf = gotf.position;
+
+        //Sets the initial camera position
+        Follow();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        //Saves on memory by checking if the position has changed before performing additional calculations
+        if(pgotf != gotf.position)
+        {
+            //Follows the game object and sets the current position as the old position
+            Follow();
+            pgotf = gotf.position;
+        }
     }
 
-    private void UpdateCameraBoundaries()
+    //Reduce redundancy by packing in the logic for following the game object
+    private void Follow()
     {
-        //Boundaries are set from a clockwise position starting at North and ending at West
-        boundaries[0] = tf.position.y - _cameraBoundary;
-        boundaries[1] = tf.position.x + _cameraBoundary;
-        boundaries[2] = tf.position.y + _cameraBoundary;
-        boundaries[3] = tf.position.x - _cameraBoundary;
+        //Sets the position of the camera based on the Game Object transform with additional offsets and camera positioning
+        tf.position = new Vector3(gotf.position.x, gotf.position.y + _yOffset, gotf.position.z - 1);
     }
 
+    
 
 }
