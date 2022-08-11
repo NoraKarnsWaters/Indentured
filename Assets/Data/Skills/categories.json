@@ -1,0 +1,14 @@
+{
+	{
+		"id": 1,
+		"name": "Movement"
+	},
+	{
+		"id": 2,
+		"name": "Combat"
+	},
+	{
+		"id": 3,
+		"name": "Gathering"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"name": "Dash",
+	"description": "Burst foward a small distance in space.",
+	"type": 2,
+	"requirement": null,
+	"recipe": null,
+	"unlocked": false,
+	"execution": "Speed.Dash"
+}
