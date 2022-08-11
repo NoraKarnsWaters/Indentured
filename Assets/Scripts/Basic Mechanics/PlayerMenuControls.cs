@@ -7,7 +7,8 @@ public class PlayerMenuControls : MonoBehaviour
     [SerializeField]
     GameObject goGameMenu;
 
-    // Update is called once per frame
+    //Continually look for whether the menu button is pressed
+    //Change active state for menu if the menu button is pressed and the menu object is not null
     void Update()
     {
         if(goGameMenu != null)
